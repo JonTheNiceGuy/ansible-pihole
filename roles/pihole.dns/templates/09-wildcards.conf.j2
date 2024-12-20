@@ -1,0 +1,8 @@
+{% for item in dns_wildcards | sort(attribute='from') %}
+{% for from_item in item.from | split(',') %}
+{% if '.' not in from_item %}
+address=/{{ from_item }}.{{ default_domain }}/{{ item.to }}
+{% endif %}
+address=/{{ from_item }}/{{ item.to }}
+{% endfor %}
+{% endfor %}

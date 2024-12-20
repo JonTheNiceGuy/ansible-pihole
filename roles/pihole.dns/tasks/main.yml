@@ -1,0 +1,26 @@
+- name: Set A and AAAA References (/etc/pihole/custom.list)
+  notify: Restart DNSMasq
+  ansible.builtin.template:
+    dest: /etc/pihole/custom.list
+    src: custom.list.j2
+    owner: pihole
+    group: pihole
+    mode: "0644"
+
+- name: Set CNAME References (/etc/dnsmasq.d/05-pihole-custom-cname.conf)
+  notify: Restart DNSMasq
+  ansible.builtin.template:
+    dest: /etc/dnsmasq.d/05-pihole-custom-cname.conf
+    src: 05-pihole-custom-cname.conf.j2
+    owner: pihole
+    group: pihole
+    mode: "0644"
+
+- name: Set DNS Wildcards (/etc/dnsmasq.d/09-wildcards.conf)
+  notify: Restart DNSMasq
+  ansible.builtin.template:
+    dest: /etc/dnsmasq.d/09-wildcards.conf
+    src: 09-wildcards.conf.j2
+    owner: pihole
+    group: pihole
+    mode: "0664"

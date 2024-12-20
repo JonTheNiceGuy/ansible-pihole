@@ -1,0 +1,32 @@
+{% if store_dhcp_as_dns_records | default(false) | bool %}
+{% for item in dhcp_reservations | sort(attribute='decimalip') %}
+{% if '.' not in item.hostname %}
+{{ item.ip }} {{ item.hostname }}.{{ default_domain }}
+{% endif %}
+{{ item.ip }} {{ item.hostname }}
+{% endfor %}
+{% endif %}
+{% for item in calc_dns_a_and_aaaa_records | sort(attribute='decimalip') %}
+{% for name in item.name | split(',') %}
+{% set ns=namespace(proceed=true) %}
+{% for dhcp_item in dhcp_reservations %}
+{% if dhcp_item.hostname == name and dhcp_item.ip == item.ip %}
+{% set ns.proceed=false %}
+{% endif %}
+{% endfor %}
+{% if ns.proceed %}
+{{ item.ip }} {{ name }}
+{% endif %}
+{% if '.' not in name %}
+{% set ns=namespace(proceed=true) -%}
+{% for dhcp_item in dhcp_reservations -%}
+{% if dhcp_item.hostname == (name + '.' + default_domain) and dhcp_item.ip == item.ip -%}
+{% set ns.proceed=false -%}
+{% endif -%}
+{% endfor -%}
+{%- if ns.proceed %}
+{{ item.ip }} {{ name }}.{{ default_domain }}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endfor %}

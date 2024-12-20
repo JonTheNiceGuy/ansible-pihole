@@ -1,0 +1,8 @@
+- name: Set DHCP Reservations
+  notify: Restart DNSMasq
+  ansible.builtin.template:
+    dest: /etc/dnsmasq.d/04-pihole-static-dhcp.conf
+    src: 04-pihole-static-dhcp.conf.j2
+    owner: pihole
+    group: pihole
+    mode: "0664"

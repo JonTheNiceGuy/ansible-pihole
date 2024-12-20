@@ -1,0 +1,11 @@
+- name: Setup Values
+  hosts: pihole
+  gather_facts: false
+  tasks:
+    - name: Configure DHCP
+      ansible.builtin.include_role:
+        name: pihole.dhcp
+
+    - name: Configure DNS
+      ansible.builtin.include_role:
+        name: pihole.dns

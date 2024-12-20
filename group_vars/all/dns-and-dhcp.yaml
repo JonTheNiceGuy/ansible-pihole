@@ -1,0 +1,25 @@
+default_domain: "example.org"
+network_cidr: 198.18.0.0/22 # Not the real IP subnet, but a documentation one
+phpipam_network_id: "{{ lookup('subnet_id_by_cidr', network_cidr) }}"
+dhcp_router: 198.18.0.1
+dhcp_active: "true"
+
+store_dhcp_as_dns_records: true
+
+dns_a_and_aaaa_records:
+  - {ip: "198.18.3.0", name: "docker-host"}
+
+  - {ip: "198.18.3.1", name: "proxmox1"}
+  - {ip: "198.18.3.2", name: "proxmox2"}
+
+  - {ip: "198.18.3.3", name: "pihole1"}
+  - {ip: "198.18.3.4", name: "pihole2"}
+
+
+dns_cnames:
+  - {from: "ipam", to: "docker-host.example.org"}
+
+dns_wildcards:
+  - {from: "lab.example.org", to: "192.168.3.0"}
+
+dhcp_reservations: "{{ lookup('all_addresses_in_subnet_cidr', '198.18.0.0/22', with_hostname=true, with_mac_address=true) }}"

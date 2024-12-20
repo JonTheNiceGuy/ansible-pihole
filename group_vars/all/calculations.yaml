@@ -1,0 +1,10 @@
+calc_dns_a_and_aaaa_records: |-
+  [
+    {%- for item in dns_a_and_aaaa_records -%}
+      {
+        "ip": "{{ item.ip }}",
+        "decimalip": "{{ item.ip | ansible.utils.ipaddr | ansible.utils.ipaddr('int') }}",
+        "name": "{{ item.name }}"
+      },
+    {%- endfor -%}
+  ]

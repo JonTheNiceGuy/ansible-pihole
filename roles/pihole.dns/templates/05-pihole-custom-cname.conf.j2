@@ -1,0 +1,8 @@
+{% for item in dns_cnames | sort(attribute='from') %}
+{% for from_item in item.from | split(',') %}
+{% if '.' not in from_item %}
+cname={{ from_item }}.{{ default_domain }},{{ item.to }}
+{% endif %}
+cname={{ from_item }},{{ item.to }}
+{% endfor %}
+{% endfor %}

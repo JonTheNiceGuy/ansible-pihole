@@ -1,0 +1,2 @@
+ipam_client: https://ipam.example.org/api/ansible
+ipam_token: abcDEF123GHIjkl_-=+

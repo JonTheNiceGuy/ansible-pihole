@@ -1,0 +1,3 @@
+{%- for item in dhcp_reservations | sort(attribute='decimalip') %}
+dhcp-host={{ item.mac }},{{ item.ip }},{{ item.hostname }}
+{% endfor %}
